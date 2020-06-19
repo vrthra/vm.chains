@@ -1,154 +1,104 @@
 diff --git a/afl/run_all.sh b/afl/run_all.sh
-index 142410a..729a33b 100644
+index 142410a..64b016d 100644
 --- a/afl/run_all.sh
 +++ b/afl/run_all.sh
-@@ -1,38 +1,18 @@
- RUNTIME=$1
-+RUNTIME="${RUNTIME:-1}"
-+(cd csv && sh run_exp.sh $RUNTIME )
-+(cd ini && sh run_exp.sh $RUNTIME )
-+(cd cjson && sh run_exp.sh $RUNTIME )
-+(cd tinyc && sh run_exp.sh $RUNTIME )
-+(cd mjs && sh run_exp.sh $RUNTIME )
+@@ -16,10 +16,10 @@ cd mjs
+ sh run_exp.sh $RUNTIME &
+ cd ..
  
--cd csv
--sh run_exp.sh $RUNTIME &
--cd ..
--cd ini
--sh run_exp.sh $RUNTIME &
--cd ..
--cd cjson
--sh run_exp.sh $RUNTIME &
--cd ..
--cd tinyc
--sh run_exp.sh $RUNTIME &
--cd ..
--cd mjs
--sh run_exp.sh $RUNTIME &
--cd ..
--
 -sleep ${RUNTIME}h
-+#sleep ${RUNTIME}h
++/bin/sleep ${RUNTIME}h
  
  #some safety buffer s.t. all is properly closed and everything had enough time to stop
 -sleep 15m
-+#sleep 15m
++/bin/sleep 15m
  
--cd csv/eval/
--sh comp_run.sh csvparser &
--cd ../..
--cd ini/eval/
--sh comp_run.sh ini &
--cd ../..
--cd cjson/eval/
--sh comp_run.sh cJSON &
--cd ../..
--cd tinyc/eval/
--sh comp_run.sh tiny &
--cd ../..
--cd mjs/eval/
--sh comp_run.sh mjs &
--cd ../..
-+(cd csv/eval/ && sh comp_run.sh csvparser )
-+(cd ini/eval/ && sh comp_run.sh ini )
-+(cd cjson/eval/ && sh comp_run.sh cJSON )
-+(cd tinyc/eval/ && sh comp_run.sh tiny )
-+(cd mjs/eval/ && sh comp_run.sh mjs )
+ cd csv/eval/
+ sh comp_run.sh csvparser &
 diff --git a/klee/run_all.sh b/klee/run_all.sh
-index 142410a..34ef6a5 100644
+index 142410a..64b016d 100644
 --- a/klee/run_all.sh
 +++ b/klee/run_all.sh
-@@ -1,38 +1,19 @@
- RUNTIME=$1
-+RUNTIME="${RUNTIME:-1}"
-+(cd csv && sh run_exp.sh $RUNTIME )
-+(cd ini && sh run_exp.sh $RUNTIME )
-+(cd cjson && sh run_exp.sh $RUNTIME )
-+(cd tinyc && sh run_exp.sh $RUNTIME )
-+(cd mjs && sh run_exp.sh $RUNTIME )
+@@ -16,10 +16,10 @@ cd mjs
+ sh run_exp.sh $RUNTIME &
+ cd ..
  
--cd csv
--sh run_exp.sh $RUNTIME &
--cd ..
--cd ini
--sh run_exp.sh $RUNTIME &
--cd ..
--cd cjson
--sh run_exp.sh $RUNTIME &
--cd ..
--cd tinyc
--sh run_exp.sh $RUNTIME &
--cd ..
--cd mjs
--sh run_exp.sh $RUNTIME &
--cd ..
--
 -sleep ${RUNTIME}h
-+#sleep ${RUNTIME}h
++/bin/sleep ${RUNTIME}h
  
  #some safety buffer s.t. all is properly closed and everything had enough time to stop
 -sleep 15m
-+#sleep 15m
-+
-+(cd csv/eval/ && sh comp_run.sh csvparser )
-+(cd ini/eval/ && sh comp_run.sh ini )
-+(cd cjson/eval/ && sh comp_run.sh cJSON )
-+(cd tinyc/eval/ && sh comp_run.sh tiny )
-+(cd mjs/eval/ && sh comp_run.sh mjs )
++/bin/sleep 15m
  
--cd csv/eval/
--sh comp_run.sh csvparser &
--cd ../..
--cd ini/eval/
--sh comp_run.sh ini &
--cd ../..
--cd cjson/eval/
--sh comp_run.sh cJSON &
--cd ../..
--cd tinyc/eval/
--sh comp_run.sh tiny &
--cd ../..
--cd mjs/eval/
--sh comp_run.sh mjs &
--cd ../..
-diff --git a/pfuzzer/samples/run_all.sh b/pfuzzer/samples/run_all.sh
-index 845d317..639c07c 100644
---- a/pfuzzer/samples/run_all.sh
-+++ b/pfuzzer/samples/run_all.sh
-@@ -1,13 +1,9 @@
- RUNTIME=$1
-+RUNTIME="${RUNTIME:-1}"
-+(cd ./cjson/ && sh run_exp.sh $RUNTIME cJSON )
-+(cd ./ini && sh run_exp.sh $RUNTIME ini )
-+(cd ./tinyc && sh run_exp.sh $RUNTIME tiny )
-+(cd ./csv && sh run_exp.sh $RUNTIME csvparser )
-+(cd ./mjs && sh run_exp.sh $RUNTIME mjs )
-+
- 
--cd cjson/
--sh run_exp.sh $RUNTIME cJSON &
--cd ../ini
--sh run_exp.sh $RUNTIME ini &
--cd ../tinyc
--sh run_exp.sh $RUNTIME tiny &
--cd ../csv
--sh run_exp.sh $RUNTIME csvparser &
--cd ../mjs
--sh run_exp.sh $RUNTIME mjs &
--cd ..
-diff --git a/run_experiments.sh b/run_experiments.sh
-index 74b24d3..996aace 100644
---- a/run_experiments.sh
-+++ b/run_experiments.sh
-@@ -1,7 +1,5 @@
- RUNTIME=$1
--cd afl
--sh run_all.sh $RUNTIME &
--cd ../klee
--sh run_all.sh $RUNTIME &
--cd ../pfuzzer/samples/
--sh run_all.sh $RUNTIME &
-+RUNTIME="${RUNTIME:-1}"
-+( cd afl && sh run_all.sh $RUNTIME )
-+( cd ./klee && sh run_all.sh $RUNTIME )
-+( cd ./pfuzzer/samples/ && sh run_all.sh $RUNTIME )
+ cd csv/eval/
+ sh comp_run.sh csvparser &
+diff --git a/pfuzzer/samples/cjson/run_exp.sh b/pfuzzer/samples/cjson/run_exp.sh
+index 5cffd14..c4feaaf 100644
+--- a/pfuzzer/samples/cjson/run_exp.sh
++++ b/pfuzzer/samples/cjson/run_exp.sh
+@@ -5,7 +5,7 @@ sh clean.sh
+ ../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+-sleep ${RUNTIME}h
+-sleep 15m
++/bin/sleep ${RUNTIME}h
++/bin/sleep 15m
+ cd $CURRENTDIR
+ sh get_cov.sh ${SUBJECT} ${CURRENTDIR}
+diff --git a/pfuzzer/samples/csv/run_exp.sh b/pfuzzer/samples/csv/run_exp.sh
+index 5cffd14..c4feaaf 100644
+--- a/pfuzzer/samples/csv/run_exp.sh
++++ b/pfuzzer/samples/csv/run_exp.sh
+@@ -5,7 +5,7 @@ sh clean.sh
+ ../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+-sleep ${RUNTIME}h
+-sleep 15m
++/bin/sleep ${RUNTIME}h
++/bin/sleep 15m
+ cd $CURRENTDIR
+ sh get_cov.sh ${SUBJECT} ${CURRENTDIR}
+diff --git a/pfuzzer/samples/ini/run_exp.sh b/pfuzzer/samples/ini/run_exp.sh
+index 5cffd14..c4feaaf 100644
+--- a/pfuzzer/samples/ini/run_exp.sh
++++ b/pfuzzer/samples/ini/run_exp.sh
+@@ -5,7 +5,7 @@ sh clean.sh
+ ../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+-sleep ${RUNTIME}h
+-sleep 15m
++/bin/sleep ${RUNTIME}h
++/bin/sleep 15m
+ cd $CURRENTDIR
+ sh get_cov.sh ${SUBJECT} ${CURRENTDIR}
+diff --git a/pfuzzer/samples/mjs/run_exp.sh b/pfuzzer/samples/mjs/run_exp.sh
+index 5cffd14..c4feaaf 100644
+--- a/pfuzzer/samples/mjs/run_exp.sh
++++ b/pfuzzer/samples/mjs/run_exp.sh
+@@ -5,7 +5,7 @@ sh clean.sh
+ ../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+-sleep ${RUNTIME}h
+-sleep 15m
++/bin/sleep ${RUNTIME}h
++/bin/sleep 15m
+ cd $CURRENTDIR
+ sh get_cov.sh ${SUBJECT} ${CURRENTDIR}
+diff --git a/pfuzzer/samples/tinyc/run_exp.sh b/pfuzzer/samples/tinyc/run_exp.sh
+index 5cffd14..c4feaaf 100644
+--- a/pfuzzer/samples/tinyc/run_exp.sh
++++ b/pfuzzer/samples/tinyc/run_exp.sh
+@@ -5,7 +5,7 @@ sh clean.sh
+ ../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+-sleep ${RUNTIME}h
+-sleep 15m
++/bin/sleep ${RUNTIME}h
++/bin/sleep 15m
+ cd $CURRENTDIR
+ sh get_cov.sh ${SUBJECT} ${CURRENTDIR}
