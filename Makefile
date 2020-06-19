@@ -18,6 +18,7 @@ artifact.tar.gz: Vagrantfile Makefile
 	cp etc/tiny.c artifact/chains/src/klee/tinyc/eval/tiny.c
 	cp etc/tiny.c artifact/chains/src/pfuzzer/samples/tinyc/tiny.c
 	# cat etc/patch.patch | (cd artifact/chains/src/; patch -p1 )
+	cp etc/patch.patch artifact/chains/
 	mkdir -p  artifact/chains/src/pfuzzer/modules/trace-taint/sources/dependencies/
 	cp etc/*.jar artifact/chains/src/pfuzzer/modules/trace-taint/sources/dependencies/
 	cp -r Vagrantfile artifact/
