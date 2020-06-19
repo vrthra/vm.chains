@@ -21,6 +21,9 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get -y install openjdk-11-jdk-headless make graphviz python3.7 python3-venv python3-pip ninja-build cmake subversion pkg-config  llvm-4.0 llvm-4.0-dev zlib1g-dev python3-software-properties python3-apt libclang-8-dev clang-format-8 clang-8 clang-4.0 jq clang
     apt-get -y install bc bison build-essential curl flex git libboost-all-dev libcap-dev libncurses5-dev python-minimal python-pip unzip
+    apt-get -y install libtcmalloc-minimal4 libgoogle-perftools-dev libsqlite3-dev doxygen
+    apt-get -y install clang-6.0 llvm-6.0 llvm-6.0-dev llvm-6.0-tools
+    apt-get -y install python perl minisat
 
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
     pip3 install wheel
@@ -31,6 +34,7 @@ Vagrant.configure("2") do |config|
     pip3 install clang
     pip3 install fuzzingbook
     pip3 install meson==0.46.1
+    pip3 install tabulate
 
     pip3 install jupyter_contrib_nbextensions
     pip3 install jupyter_nbextensions_configurator
