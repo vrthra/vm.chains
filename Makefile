@@ -7,17 +7,47 @@ clobber: clean;
 	-rm -rf .db
 results:; mkdir -p results
 
-artifact.tar.gz: Vagrantfile Makefile
+#etc/minsat.2.2.1.tar.gz:
+#	wget https://github.com/stp/minisat/archive/releases/2.2.1.tar.gz
+#	mv 2.2.1.tar.gz etc/minsat.2.2.1.tar.gz
+
+etc/stp.2.3.3.tar.gz:
+	wget https://github.com/stp/stp/archive/2.3.3.tar.gz
+	mv 2.3.3.tar.gz etc/stp.2.3.3.tar.gz
+
+etc/klee_uclibc_v1.2.tar.gz:
+	wget https://github.com/klee/klee-uclibc/archive/klee_uclibc_v1.2.tar.gz
+	mv klee_uclibc_v1.2.tar.gz etc/
+
+etc/z3-4.4.1.tar.gz:
+	wget https://github.com/Z3Prover/z3/archive/z3-4.4.1.tar.gz
+	mv z3-4.4.1.tar.gz etc/z3-4.4.1.tar.gz
+
+etc/klee_1.4.tar.gz:
+	wget https://github.com/klee/klee/archive/v1.4.0.tar.gz
+	mv v1.4.0.tar.gz etc/klee_1.4.tar.gz
+
+etc/klee_2.1.tar.gz:
+	wget https://github.com/klee/klee/archive/v2.1.tar.gz
+	mv v2.1.tar.gz etc/klee_2.1.tar.gz
+
+artifact.tar.gz: Vagrantfile Makefile etc/stp.2.3.3.tar.gz etc/klee_uclibc_v1.2.tar.gz
 	rm -rf artifact && mkdir -p artifact/chains
 	cp README.md artifact/README.txt
-	cp -r README.md Makefile Vagrantfile taints.tar.gz etc/setup_llvm_clang.sh  etc/json-c-0.13.1-20180305.tar.gz etc/afl-2.52b.tgz artifact/chains
+	cp -r README.md Makefile Vagrantfile taints.tar.gz taints_build_debug.tar.gz etc/setup_llvm_clang.sh  etc/json-c-0.13.1-20180305.tar.gz \
+		etc/afl-2.52b.tgz \
+		etc/stp.2.3.3.tar.gz \
+		etc/klee_uclibc_v1.2.tar.gz \
+		etc/klee_2.1.tar.gz \
+		etc/install_klee.sh \
+		artifact/chains
 	git clone https://github.com/uds-se/pFuzzer/ artifact/chains/src
 	cp etc/tiny.c artifact/chains/src/afl/tinyc/tiny.c
 	cp etc/tiny.c artifact/chains/src/afl/tinyc/eval/tiny.c
 	cp etc/tiny.c artifact/chains/src/klee/tinyc/tiny.c
 	cp etc/tiny.c artifact/chains/src/klee/tinyc/eval/tiny.c
 	cp etc/tiny.c artifact/chains/src/pfuzzer/samples/tinyc/tiny.c
-	# cat etc/patch.patch | (cd artifact/chains/src/; patch -p1 )
+	cat etc/patch.patch | (cd artifact/chains/src/; patch -p1 )
 	cp etc/patch.patch artifact/chains/
 	mkdir -p  artifact/chains/src/pfuzzer/modules/trace-taint/sources/dependencies/
 	cp etc/*.jar artifact/chains/src/pfuzzer/modules/trace-taint/sources/dependencies/
@@ -38,16 +68,17 @@ chains.box: $(ARTIFACT)
 	cd artifact && vagrant ssh -c 'cd ~/ && echo export PATH="/usr/local/opt/llvm@4/bin:/usr/local/bin:$$PATH" > ~/.init.sh'
 	cat toolchains.tar.gz.1 toolchains.tar.gz.2 > artifact/chains/toolchains.tar.gz
 	cd artifact && vagrant ssh -c 'cd ~/taints/ && cp /vagrant/chains/setup_llvm_clang.sh ./scripts/ && ./scripts/setup_llvm_clang.sh'
-	# cp artifact/chains/toolchain.tar.gz .
 	cd artifact && vagrant ssh -c 'mkdir -p ~/chains/src/programs'
-	cd artifact && vagrant ssh -c 'cd ~/chains/src/programs; zcat /vagrant/chains/afl-2.52b.tgz | tar -xvpf -'
+	cd artifact && vagrant ssh -c 'cd ~/chains/src/programs; zcat /vagrant/chains/afl-2.52b.tgz | tar -xpf -'
 	cd artifact && vagrant ssh -c 'cd ~/chains/src/programs/afl-2.52b/ && make'
-	cd artifact && vagrant ssh -c 'zcat /vagrant/chains/json-c-0.13.1-20180305.tar.gz | tar -xvpf -'
+	cd artifact && vagrant ssh -c 'zcat /vagrant/chains/json-c-0.13.1-20180305.tar.gz | tar -xpf -'
 	cd artifact && vagrant ssh -c 'cd /home/vagrant/json-c-json-c-0.13.1-20180305 && ./configure --prefix=/usr && make'
 	cd artifact && vagrant ssh -c 'cd /home/vagrant/json-c-json-c-0.13.1-20180305 && sudo make install'
 	cd artifact && vagrant ssh -c 'cd /home/vagrant/ && rm -rf json-c-json-c-0.13.1-20180305'
-	cd artifact && vagrant ssh -c 'cd ~/taints/ && source ~/.init.sh && meson build/debug --prefix="$$(pwd)/install"'
+	#cd artifact && vagrant ssh -c 'cd ~/taints/ && source ~/.init.sh && meson build/debug --prefix="$$(pwd)/install"' # finds wrong llvm-config see next line
+	cd artifact && vagrant ssh -c 'cd ~/ && zcat /vagrant/chains/taints_build_debug.tar.gz | tar -xpf -'
 	cd artifact && vagrant ssh -c 'cd ~/taints/ && source ~/.init.sh && ninja -C build/debug install'
+	cd artifact && vagrant ssh -c 'bash -x /vagrant/chains/install_klee.sh'
 	cd artifact && vagrant package --output ../chains1.box --vagrantfile ../Vagrantfile.new
 	mv chains1.box chains.box
 
