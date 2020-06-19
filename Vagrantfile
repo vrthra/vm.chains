@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   # apt-get -y install openjdk-11-jre-headless make docker.io graphviz python3-venv python3-pip libjson-c-dev
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get -y install openjdk-11-jdk-headless make graphviz python3.7 python3-venv python3-pip ninja-build cmake subversion pkg-config  llvm-4.0 llvm-4.0-dev zlib1g-dev python3-software-properties python3-apt libclang-8-dev clang-format-8 clang-8 clang-4.0 jq
+    apt-get -y install openjdk-11-jdk-headless make graphviz python3.7 python3-venv python3-pip ninja-build cmake subversion pkg-config  llvm-4.0 llvm-4.0-dev zlib1g-dev python3-software-properties python3-apt clang-4.0 clang jq
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
     pip3 install wheel
     pip3 install graphviz
@@ -41,6 +41,7 @@ Vagrant.configure("2") do |config|
     echo jupyter notebook --ip 0.0.0.0 --port 8888 >> /home/vagrant/startjupyter.sh
     chmod +x /home/vagrant/startjupyter.sh
 
-    echo core >/proc/sys/kernel/core_pattern
+    echo "sudo -- sh -c 'core >/proc/sys/kernel/core_pattern'" > /home/vagrant/enable_core.sh
+    chmod +x /home/vagrant/enable_core.sh
   SHELL
 end
