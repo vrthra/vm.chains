@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 mkdir -p ~/klee_build
 mkdir -p ~/klee_build/stp-2.3.3/build
 
