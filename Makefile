@@ -31,7 +31,7 @@ etc/klee_2.1.tar.gz:
 	wget https://github.com/klee/klee/archive/v2.1.tar.gz
 	mv v2.1.tar.gz etc/klee_2.1.tar.gz
 
-artifact.tar.gz: Vagrantfile Makefile etc/stp.2.3.3.tar.gz etc/klee_uclibc_v1.2.tar.gz
+artifact.tar.gz: Vagrantfile Makefile etc/stp.2.3.3.tar.gz etc/klee_uclibc_v1.2.tar.gz etc/klee_2.1.tar.gz
 	rm -rf artifact && mkdir -p artifact/chains
 	cp README.md artifact/README.txt
 	cp -r README.md Makefile Vagrantfile taints.tar.gz taints_build_debug.tar.gz etc/setup_llvm_clang.sh  etc/json-c-0.13.1-20180305.tar.gz \
