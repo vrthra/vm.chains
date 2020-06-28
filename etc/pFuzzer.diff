@@ -1,0 +1,65 @@
+diff --git a/pfuzzer/samples/cjson/run_exp.sh b/pfuzzer/samples/cjson/run_exp.sh
+index 5cffd14..bb46ec9 100644
+--- a/pfuzzer/samples/cjson/run_exp.sh
++++ b/pfuzzer/samples/cjson/run_exp.sh
+@@ -2,7 +2,7 @@ RUNTIME=$1
+ SUBJECT=$2
+ CURRENTDIR=$(pwd)
+ sh clean.sh
+-../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
++$HOME/taints/install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+ sleep ${RUNTIME}h
+diff --git a/pfuzzer/samples/csv/run_exp.sh b/pfuzzer/samples/csv/run_exp.sh
+index 5cffd14..bb46ec9 100644
+--- a/pfuzzer/samples/csv/run_exp.sh
++++ b/pfuzzer/samples/csv/run_exp.sh
+@@ -2,7 +2,7 @@ RUNTIME=$1
+ SUBJECT=$2
+ CURRENTDIR=$(pwd)
+ sh clean.sh
+-../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
++$HOME/taints/install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+ sleep ${RUNTIME}h
+diff --git a/pfuzzer/samples/ini/run_exp.sh b/pfuzzer/samples/ini/run_exp.sh
+index 5cffd14..bb46ec9 100644
+--- a/pfuzzer/samples/ini/run_exp.sh
++++ b/pfuzzer/samples/ini/run_exp.sh
+@@ -2,7 +2,7 @@ RUNTIME=$1
+ SUBJECT=$2
+ CURRENTDIR=$(pwd)
+ sh clean.sh
+-../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
++$HOME/taints/install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+ sleep ${RUNTIME}h
+diff --git a/pfuzzer/samples/mjs/run_exp.sh b/pfuzzer/samples/mjs/run_exp.sh
+index 5cffd14..bb46ec9 100644
+--- a/pfuzzer/samples/mjs/run_exp.sh
++++ b/pfuzzer/samples/mjs/run_exp.sh
+@@ -2,7 +2,7 @@ RUNTIME=$1
+ SUBJECT=$2
+ CURRENTDIR=$(pwd)
+ sh clean.sh
+-../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
++$HOME/taints/install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+ sleep ${RUNTIME}h
+diff --git a/pfuzzer/samples/tinyc/run_exp.sh b/pfuzzer/samples/tinyc/run_exp.sh
+index 5cffd14..bb46ec9 100644
+--- a/pfuzzer/samples/tinyc/run_exp.sh
++++ b/pfuzzer/samples/tinyc/run_exp.sh
+@@ -2,7 +2,7 @@ RUNTIME=$1
+ SUBJECT=$2
+ CURRENTDIR=$(pwd)
+ sh clean.sh
+-../../install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
++$HOME/taints/install/bin/trace-instr $(pwd)/${SUBJECT}.c ../excluded_functions > log.txt 2>&1
+ cd ../../chains
+ time timeout -k9 ${RUNTIME}h python3 chains.py -p ${CURRENTDIR}/${SUBJECT}.c -a False -i False 1> /dev/null 2> error.log &
+ sleep ${RUNTIME}h
