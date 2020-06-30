@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
     echo jupyter notebook --ip 0.0.0.0 --port 8888 >> /home/vagrant/startjupyter.sh
     chmod +x /home/vagrant/startjupyter.sh
 
-    echo "sudo -- sh -c 'core >/proc/sys/kernel/core_pattern'" > /home/vagrant/enable_core.sh
+    echo "sudo -- sh -c 'echo core >/proc/sys/kernel/core_pattern'" > /home/vagrant/enable_core.sh
     chmod +x /home/vagrant/enable_core.sh
 
   SHELL
