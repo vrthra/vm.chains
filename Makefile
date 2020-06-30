@@ -41,14 +41,14 @@ artifact.tar.gz: Vagrantfile Makefile etc/stp.2.3.3.tar.gz etc/klee_uclibc_v1.2.
 		etc/klee_2.1.tar.gz \
 		etc/install_klee.sh \
 		artifact/chains
-	git clone https://github.com/uds-se/pFuzzer/ artifact/chains/src
+	git clone https://github.com/vrthra/pFuzzer/ artifact/chains/src
 	cp etc/tiny.c artifact/chains/src/afl/tinyc/tiny.c
 	cp etc/tiny.c artifact/chains/src/afl/tinyc/eval/tiny.c
 	cp etc/tiny.c artifact/chains/src/klee/tinyc/tiny.c
 	cp etc/tiny.c artifact/chains/src/klee/tinyc/eval/tiny.c
 	cp etc/tiny.c artifact/chains/src/pfuzzer/samples/tinyc/tiny.c
-	cat etc/patch.patch | (cd artifact/chains/src/; patch -p1 )
-	cp etc/patch.patch artifact/chains/
+	# cat etc/patch.patch | (cd artifact/chains/src/; patch -p1 )
+	# cp etc/patch.patch artifact/chains/ # vrthra/pFuzzer already contains this patch
 	mkdir -p  artifact/chains/src/pfuzzer/modules/trace-taint/sources/dependencies/
 	cp etc/*.jar artifact/chains/src/pfuzzer/modules/trace-taint/sources/dependencies/
 	cp -r Vagrantfile artifact/
