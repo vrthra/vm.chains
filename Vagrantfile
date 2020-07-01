@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
     chmod +x /home/vagrant/startjupyter.sh
 
     echo "sudo -- sh -c 'echo core >/proc/sys/kernel/core_pattern'" > /home/vagrant/start_tests.sh
-    echo 'echo python3 pstree.py $$ > /home/vagrant/pstree.sh' >> /home/vagrant/start_tests.sh
+    echo 'echo python3 /home/vagrant/pstree.py $$ > /home/vagrant/pstree.sh' >> /home/vagrant/start_tests.sh
     echo "chmod +x /home/vagrant/pstree.sh" >> /home/vagrant/start_tests.sh
     echo "cd /home/vagrant/chains/src" >> /home/vagrant/start_tests.sh
     echo "bash run_experiments.sh 1" >> /home/vagrant/start_tests.sh
