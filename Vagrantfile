@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
     chmod +x /home/vagrant/start_tests.sh
 
     echo "/usr/bin/watch /home/vagrant/pstree.sh" > /home/vagrant/watch.sh
-    echo "#/usr/bin/watch /bin/ps -u vagrant --forest -f" > /home/vagrant/watch.sh
+    echo "#/usr/bin/watch /bin/ps -u vagrant --forest -f" >> /home/vagrant/watch.sh
     chmod +x /home/vagrant/watch.sh
 
   SHELL
