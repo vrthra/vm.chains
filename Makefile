@@ -40,6 +40,7 @@ artifact.tar.gz: Vagrantfile Makefile etc/stp.2.3.3.tar.gz etc/klee_uclibc_v1.2.
 		etc/klee_uclibc_v1.2.tar.gz \
 		etc/klee_2.1.tar.gz \
 		etc/install_klee.sh \
+		etc/pstree.py \
 		artifact/chains
 	git clone https://github.com/vrthra/pFuzzer/ artifact/chains/src
 	cp etc/tiny.c artifact/chains/src/afl/tinyc/tiny.c
@@ -68,6 +69,7 @@ chains.box: $(ARTIFACT)
 	cd artifact && vagrant ssh -c 'cd ~/ && echo export PATH="/usr/local/opt/llvm@4/bin:/usr/local/bin:$$PATH" > ~/.init.sh'
 	cat toolchains.tar.gz.1 toolchains.tar.gz.2 > artifact/chains/toolchains.tar.gz
 	cd artifact && vagrant ssh -c 'cd ~/taints/ && cp /vagrant/chains/setup_llvm_clang.sh ./scripts/ && ./scripts/setup_llvm_clang.sh'
+	cd artifact && vagrant ssh -c 'cp /vagrant/chains/pstree.py ~/'
 	cd artifact && vagrant ssh -c 'mkdir -p ~/chains/src/programs'
 	cd artifact && vagrant ssh -c 'cd ~/chains/src/programs; zcat /vagrant/chains/afl-2.52b.tgz | tar -xpf -'
 	cd artifact && vagrant ssh -c 'cd ~/chains/src/programs/afl-2.52b/ && make'

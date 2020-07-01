@@ -45,14 +45,18 @@ Vagrant.configure("2") do |config|
     echo jupyter notebook --ip 0.0.0.0 --port 8888 >> /home/vagrant/startjupyter.sh
     chmod +x /home/vagrant/startjupyter.sh
 
-    echo "sudo -- sh -c 'echo core >/proc/sys/kernel/core_pattern'" > /home/vagrant/enable_core.sh
-    chmod +x /home/vagrant/enable_core.sh
-
     echo "sudo -- sh -c 'echo core >/proc/sys/kernel/core_pattern'" > /home/vagrant/start_tests.sh
+    echo "echo python3 pstree.py $$ > /home/vagrant/pstree.sh" >> /home/vagrant/start_tests.sh
+    echo "chmod +x /home/vagrant/pstree.sh" >> /home/vagrant/start_tests.sh
     echo "cd /home/vagrant/chains/src" >> /home/vagrant/start_tests.sh
     echo "bash run_experiments.sh 1" >> /home/vagrant/start_tests.sh
     echo "bash run_evals.sh" >> /home/vagrant/start_tests.sh
+    echo "find . -name valid_inputs.txt | xargs wc -l" >> /home/vagrant/start_tests.sh
     chmod +x /home/vagrant/start_tests.sh
+
+    echo "/usr/bin/watch /home/vagrant/pstree.sh" > /home/vagrant/watch.sh
+    echo "#/usr/bin/watch /bin/ps -u vagrant --forest -f" > /home/vagrant/watch.sh
+    chmod +x /home/vagrant/watch.sh
 
   SHELL
 end
